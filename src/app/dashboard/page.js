@@ -11,7 +11,7 @@ async function UsersList() {
   // Simulate delay to see Suspense working
   // await new Promise((resolve) => setTimeout(resolve, 2000));
 
-  const users = await prisma.user.findMany({
+  const users = await prisma.userBlog.findMany({
     include: {
       posts: true,
       profile: true,
@@ -42,7 +42,7 @@ async function UsersList() {
 }
 
 export default function Home() {
-  /*   const userAdd = await prisma.user.create({
+  /*   const userAdd = await prisma.userBlog.create({
     data: {
       name: "Aurora",
       email: "aurora@flennar.com.br",
