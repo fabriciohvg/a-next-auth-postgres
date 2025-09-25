@@ -1,20 +1,13 @@
 import { PrismaClient } from "./../../generated/prisma";
+import { Suspense } from "react";
 
 const prisma = new PrismaClient();
 
-export default async function Home() {
-  /*   const userAdd = await prisma.user.create({
-    data: {
-      name: "Aurora",
-      email: "aurora@flennar.com.br",
-      posts: {
-        create: { title: "Hello World" },
-      },
-      profile: {
-        create: { bio: "I love databases and Next.js!" },
-      },
-    },
-  }); */
+// Separate component for user data with delay
+async function UsersList() {
+  // Simulate delay to see Suspense working
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
+
   const users = await prisma.user.findMany({
     include: {
       posts: true,
@@ -23,7 +16,7 @@ export default async function Home() {
   });
 
   return (
-    <div className="font-sans grid grid-cols-1 gap-4 p-4 max-w-md mx-auto">
+    <>
       {users.map((user) => (
         <div key={user.id} className="border border-gray-300 p-2 rounded">
           <div className="font-sans">
@@ -41,6 +34,30 @@ export default async function Home() {
           </div>
         </div>
       ))}
+    </>
+  );
+}
+
+export default function Home() {
+  /*   const userAdd = await prisma.user.create({
+    data: {
+      name: "Aurora",
+      email: "aurora@flennar.com.br",
+      posts: {
+        create: { title: "Hello World" },
+      },
+      profile: {
+        create: { bio: "I love databases and Next.js!" },
+      },
+    },
+  }); */
+
+  return (
+    <div className="font-sans grid grid-cols-1 gap-4 p-4 max-w-md mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Users, bio and posts</h1>
+      <Suspense fallback={<div>Loading...</div>}>
+        <UsersList />
+      </Suspense>
     </div>
   );
 }
