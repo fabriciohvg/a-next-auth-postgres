@@ -3,7 +3,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@/src/*": ["./src/*"],
-      "auth": ["./src/auth"]
+      "auth": ["./auth"]
     }
   }
 }

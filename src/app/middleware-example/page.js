@@ -1,8 +1,6 @@
 import prisma from "@/lib/db";
 import { Suspense } from "react";
 import TopNavbar from "@/components/my-top-navbar";
-import { SignIn, SignOut } from "@/components/auth-components";
-import { auth } from "auth";
 
 // Add this line to force fresh data on page reload
 // For better standard, in future update to: 1. On-Demand Revalidation (Recommended) / 2. Database Webhooks Pattern / 3. React Query/SWR Pattern (Client-Side)
@@ -43,7 +41,7 @@ async function UsersList() {
   );
 }
 
-export default async function Dashboard() {
+export default function Home() {
   /*   const userAdd = await prisma.userBlog.create({
     data: {
       name: "Aurora",
@@ -57,39 +55,13 @@ export default async function Dashboard() {
     },
   }); */
 
-  const session = await auth();
-
   return (
     <div className="font-sans grid grid-cols-1 gap-4 p-4 max-w-md mx-auto">
       <TopNavbar />
-      {!session ? (
-        <div className="text-center">
-          <SignIn />
-        </div>
-      ) : (
-        <>
-          <div className="space-y-4">
-            <div className="text-center">
-              <p className="text-gray-300">Signed in as:</p>
-              <p className="text-white">{session.user?.email}</p>
-            </div>
-
-            <div className="text-center">
-              <p className="text-gray-300">Data fetched from DB with Prisma:</p>
-            </div>
-
-            <div className="text-center">
-              <SignOut />
-            </div>
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold my-4">Users, bio and posts</h1>
-            <Suspense fallback={<div>Loading...</div>}>
-              <UsersList />
-            </Suspense>
-          </div>
-        </>
-      )}
+      <h1 className="text-2xl font-bold my-4">Users, bio and posts</h1>
+      <Suspense fallback={<div>Loading...</div>}>
+        <UsersList />
+      </Suspense>
     </div>
   );
 }
