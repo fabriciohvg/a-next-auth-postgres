@@ -2,7 +2,8 @@
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"],
-      "@/src/*": ["./src/*"]
+      "@/src/*": ["./src/*"],
+      "auth": ["./src/auth"]
     }
   }
 }

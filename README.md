@@ -20,3 +20,7 @@ Incluir "postinstall": "prisma generate" para garantir que o `Prisma Client` ser
 Instruções para implementar Auth.js + ORM Prisma (supabase)
 
 - https://authjs.dev/getting-started/adapters/prisma
+
+Auth.js exemplo completo de integração com Next.js
+
+- https://github.com/nextauthjs/next-auth/blob/main/apps/examples/nextjs/
