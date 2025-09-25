@@ -1,15 +1,15 @@
-import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import prisma from "@/lib/db";
+import CredentialsProvider from "next-auth/providers/credentials";
+import prisma from "@/lib/prisma";
+import bcrypt from "bcryptjs";
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: PrismaAdapter(prisma),
+export const authOptions = {
   providers: [
-    Credentials({
+    CredentialsProvider({
+      name: "credentials",
       credentials: {
-        username: { label: "Username" },
-        password: { label: "Password" },
+        email: { label: "Email", type: "email" },
+        name: { label: "Name", type: "name" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
@@ -43,28 +43,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
-  basePath: "/auth",
-  session: { strategy: "jwt" },
   pages: {
     signIn: "/login",
   },
   callbacks: {
-    authorized({ request, auth }) {
-      const { pathname } = request.nextUrl;
-      if (pathname === "/middleware-example") return !!auth;
-      return true;
-    },
-    jwt({ token, trigger, session, account }) {
-      if (trigger === "update") token.name = session.user.name;
-      if (account?.provider === "keycloak") {
-        return { ...token, accessToken: account.access_token };
-      }
-      return token;
+    async jwt({ token, user }) {
+      return { ...token, id: token.id ?? user?.id };
     },
     async session({ session, token }) {
-      if (token?.accessToken) session.accessToken = token.accessToken;
-
-      return session;
+      return { ...session, user: { ...session.user, id: token.id } };
     },
   },
-});
+};

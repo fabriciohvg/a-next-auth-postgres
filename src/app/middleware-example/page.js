@@ -1,4 +1,4 @@
-import prisma from "@/lib/db";
+import prisma from "@/lib/prisma";
 import { Suspense } from "react";
 import TopNavbar from "@/components/my-top-navbar";
 

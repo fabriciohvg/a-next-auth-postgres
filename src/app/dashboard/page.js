@@ -1,8 +1,8 @@
-import prisma from "@/lib/db";
 import { Suspense } from "react";
 import TopNavbar from "@/components/my-top-navbar";
 import { SignIn, SignOut } from "@/components/auth-components";
-import { auth } from "auth";
+import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 
 // Add this line to force fresh data on page reload
 // For better standard, in future update to: 1. On-Demand Revalidation (Recommended) / 2. Database Webhooks Pattern / 3. React Query/SWR Pattern (Client-Side)
